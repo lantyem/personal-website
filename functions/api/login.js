@@ -21,11 +21,18 @@ export async function onRequestPost(context) {
     "UPDATE users SET session_token = ? WHERE id = ?"
   ).bind(sessionToken, user.id).run();
 
-  return new Response("OK", {
-    headers: {
-      "Set-Cookie": `session=${sessionToken}; HttpOnly; Path=/`
+  return new Response(
+    JSON.stringify({
+      success: true,
+      role: user.role
+    }),
+    {
+      headers: {
+        "Content-Type": "application/json",
+        "Set-Cookie": `session=${sessionToken}; HttpOnly; Path=/`
+      }
     }
-  });
+  );
 }
 
 async function sha256(message) {
