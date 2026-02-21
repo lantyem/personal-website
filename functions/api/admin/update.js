@@ -1,6 +1,9 @@
 import { getUserFromSession, requireAdmin } from "../../utils/auth.js";
 
-export async function onPost(context) {
+export async function onRequest(context) {
+  if (context.request.method !== 'POST') {
+    return new Response('Method Not Allowed', { status: 405 });
+  }
   const { request, env } = context;
 
   const user = await getUserFromSession(request, env);
