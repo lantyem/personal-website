@@ -16,7 +16,15 @@ async function login() {
     }
 
     const data = await res.json();
-    showDashboard(data);
+    
+    // Fetch portfolio data after successful login
+    const portfolioRes = await fetch('/api/portfolio');
+    if (portfolioRes.ok) {
+      const portfolioData = await portfolioRes.json();
+      showDashboard(portfolioData);
+    } else {
+      errorElement.textContent = 'Failed to load portfolio';
+    }
   } catch (error) {
     errorElement.textContent = 'Login failed: ' + error.message;
   }
