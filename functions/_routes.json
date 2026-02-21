@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "include": [
+    "/api/login",
+    "/api/portfolio",
+    "/api/admin/overview",
+    "/api/admin/update"
+  ],
+  "exclude": []
+}
