@@ -167,6 +167,29 @@ td {
     color: #1e293b;
 }
 
+.dashboard {
+  background: linear-gradient(180deg, #f7fbff, #eef5ff);
+  font-family: system-ui;
+  padding: 3rem;
+}
+
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+}
+
+button {
+  background: #3a7bd5;
+  color: white;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
 
 /* FOOTER */
 
