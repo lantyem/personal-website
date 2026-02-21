@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Portfolio Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body>
+
+<header class="navbar">
+    <div class="logo"><img src="/assets/finlogo.png" alt="Return the slab"></div>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/papers.html">Papers</a>
+        <a href="/presentations.html">Presentations</a>
+        <a href="/apps/">Apps</a>
+        <a href="/portfolio-tracker/">Portfolio Tracker</a>
+        <a href="/assets/CV.pdf" target="_blank">CV</a>
+    </nav>
+</header>
+
+<main class="container">
+
+    <section id="login-section">
+        <h1>Login</h1>
+        <input id="username" placeholder="Username">
+        <input id="password" type="password" placeholder="Password">
+        <button onclick="login()">Login</button>
+        <p id="login-error"></p>
+    </section>
+
+    <section id="dashboard" style="display:none;">
+        <h1>Portfolio</h1>
+        <div id="portfolio-table"></div>
+    </section>
+
+</main>
+
+<script src="tracker.js"></script>
+
+<footer>
+    © 2026 LFOR
+</footer>
+
+</body>
+</html>
