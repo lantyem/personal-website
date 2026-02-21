@@ -1,4 +1,4 @@
-import { getUserFromSession } from "functions/utils/auth.js";
+import { getUserFromSession } from "../utils/auth.js";
 
 export async function onRequestGet(context) {
   const { request, env } = context;
