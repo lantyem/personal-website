@@ -1,4 +1,4 @@
-import { getUserFromSession, requireAdmin } from "../../utils/auth.js";
+import { getUserFromSession, requireAdmin } from "functions/utils/auth.js";
 
 export async function onRequestGet(context) {
   const { request, env } = context;
