@@ -8,7 +8,16 @@
 </head>
 <body>
 
-<!--#include virtual="/partials/header.html" -->
+<header class="navbar">
+    <div class="logo">Luis F Ortega Rojo</div>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/papers.html">Papers</a>
+        <a href="/presentations.html">Presentations</a>
+        <a href="/apps/">Apps</a>
+        <a href="/portfolio-tracker/">Portfolio Tracker</a>
+    </nav>
+</header>
 
 <main class="container">
 
@@ -22,12 +31,26 @@
         <div class="link-card">
             <h2>RF Jitter Paper</h2>
             <p>My first not anywhere near the first authorship.</p>
+
+            <div class="pdf-preview">
+                <iframe 
+                    src="/papers/RFJASC.pdf" 
+                    title="RF Jitter Paper">
+                </iframe>
+            </div>
+
             <a href="/papers/RFJASC.pdf" target="_blank">Download PDF</a>
         </div>
 
         <div class="link-card">
             <h2>Deep Space Optical Comms</h2>
             <p>I liked this one, it was a good end to the research we did for NASA on up-link comms lasers</p>
+            <div class="pdf-preview">
+                <iframe 
+                    src="/papers/DSOC-paper.pdf" 
+                    title="Deep Space Optical Comms">
+                </iframe>
+            </div>
             <a href="/papers/DSOC-paper.pdf" target="_blank">Download PDF</a>
         </div>
 
@@ -47,7 +70,9 @@
 
 </main>
 
-<!--#include virtual="/partials/footer.html" -->
+<footer>
+    © 2026 LFOR
+</footer>
 
 </body>
 </html>

@@ -91,3 +91,16 @@ footer {
     font-size: 0.85rem;
     color: #94a3b8;
 }
+
+.pdf-preview {
+    margin: 1.5rem 0;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.pdf-preview iframe {
+    width: 100%;
+    height: 500px;
+    border: none;
+}
