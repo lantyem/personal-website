@@ -1,20 +1,18 @@
+import { getUserFromSession } from "../../utils/auth.js";
+
 export async function onRequestGet(context) {
   const { request, env } = context;
 
-  const cookie = request.headers.get("Cookie");
-  if (!cookie) return new Response("Unauthorized", { status: 401 });
+  const user = await getUserFromSession(request, env);
+  if (!user) return new Response("Not logged in", { status: 401 });
 
-  const token = cookie.split("=")[1];
+  const result = await env.DB.prepare(`
+    SELECT ticker, shares
+    FROM portfolios
+    WHERE user_id = ?
+  `).bind(user.id).all();
 
-  const user = await env.DB.prepare(
-    "SELECT * FROM users WHERE session_token = ?"
-  ).bind(token).first();
-
-  if (!user) return new Response("Unauthorized", { status: 401 });
-
-  const holdings = await env.DB.prepare(
-    "SELECT ticker, shares FROM portfolios WHERE user_id = ?"
-  ).bind(user.id).all();
-
-  return Response.json(holdings.results);
+  return new Response(JSON.stringify(result.results), {
+    headers: { "Content-Type": "application/json" }
+  });
 }
