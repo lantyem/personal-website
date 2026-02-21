@@ -1,0 +1,11 @@
+﻿id,user_id,ticker,shares
+1,5,VT,10
+2,5,VMFXX,10
+3,4,VT,0
+4,4,VMFXX,0
+5,3,VT,0.8557
+6,3,VMFXX,251.29
+7,2,VT,2.0899
+8,2,VMFXX,175.82
+9,1,VT,2.1347
+10,1,VMFXX,251.75

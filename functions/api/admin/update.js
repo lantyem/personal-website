@@ -1,6 +1,6 @@
 import { getUserFromSession, requireAdmin } from "../../utils/auth.js";
 
-export async function onRequestPost(context) {
+export async function onPost(context) {
   const { request, env } = context;
 
   const user = await getUserFromSession(request, env);
