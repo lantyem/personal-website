@@ -2,42 +2,37 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Your Name</title>
+    <title>Lu's site</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/assets/styles.css">
 </head>
 <body>
 
-<header class="navbar">
-    <div class="logo">Your Name</div>
-    <nav>
-        <a href="/">Home</a>
-        <a href="/papers.html">Papers</a>
-        <a href="/presentations.html">Presentations</a>
-        <a href="/apps/">Apps</a>
-    </nav>
-</header>
+<!--#include virtual="/partials/header.html" -->
 
 <main class="container">
-
     <section class="intro">
         <h1>Hello.</h1>
         <p>
             This site hosts research papers, presentations, and small
             JavaScript experiments.
+            I started out research using optical cavities. Then I got
+            hired to build laser projects and laser amplifiers. Now I'm
+            doing quantum measurement and involved in a superconducting
+            quantum chip initiative.
         </p>
     </section>
 
     <section class="links">
         <div class="link-card">
             <h2>Papers</h2>
-            <p>Academic and written work.</p>
+            <p>All of my academic work.</p>
             <a href="/papers.html">View papers</a>
         </div>
 
         <div class="link-card">
             <h2>Presentations</h2>
-            <p>Talks and materials.</p>
+            <p>Talks and posters</p>
             <a href="/presentations.html">View presentations</a>
         </div>
 
@@ -50,9 +45,7 @@
 
 </main>
 
-<footer>
-    © 2026 Your Name
-</footer>
+<!--#include virtual="/partials/footer.html" -->
 
 </body>
 </html>
