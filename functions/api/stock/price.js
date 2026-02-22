@@ -25,7 +25,7 @@ export async function onRequest(context) {
     );
 
     if (!response.ok) {
-      return new Response(JSON.stringify({ error: 'Ticker not found' }), {
+      return new Response(JSON.stringify({ error: 'Ticker not found', status: response.status }), {
         status: 404,
         headers: { 'Content-Type': 'application/json' }
       });
@@ -34,20 +34,25 @@ export async function onRequest(context) {
     const data = await response.json();
     const price = data.quoteSummary?.result?.[0]?.price?.regularMarketPrice?.raw;
 
-    if (price === undefined) {
-      return new Response(JSON.stringify({ error: 'Price not available' }), {
+    if (price === undefined || price === null) {
+      return new Response(JSON.stringify({ error: 'Price not available', data }), {
         status: 404,
         headers: { 'Content-Type': 'application/json' }
       });
     }
 
     return new Response(JSON.stringify({ ticker, price }), {
+      status: 200,
       headers: { 'Content-Type': 'application/json' }
     });
   } catch (error) {
+    console.error('Stock price error:', error);
     return new Response(JSON.stringify({ error: error.message }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' }
+    });
+  }
+}
     });
   }
 }

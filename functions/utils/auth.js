@@ -18,6 +18,10 @@ export async function getUserFromSession(request, env) {
 
 export function requireAdmin(user) {
   if (!user || user.role !== "admin") {
-    return new Response("Unauthorized", { status: 403 });
+    return new Response(JSON.stringify({ error: "Unauthorized" }), { 
+      status: 403,
+      headers: { 'Content-Type': 'application/json' }
+    });
   }
+  return null;
 }

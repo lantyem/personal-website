@@ -21,5 +21,7 @@ export async function onRequest(context) {
     WHERE user_id = ? AND ticker = ?
   `).bind(shares, user_id, ticker).run();
 
-  return new Response("Updated");
+  return new Response(JSON.stringify({ success: true, message: 'Updated' }), {
+    headers: { 'Content-Type': 'application/json' }
+  });
 }

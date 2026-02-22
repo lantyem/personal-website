@@ -36,8 +36,14 @@ async function login() {
 async function getStockPrice(ticker) {
   try {
     const response = await fetch(`/api/stock/price?ticker=${ticker}`);
-    if (!response.ok) return null;
     const data = await response.json();
+    
+    if (!response.ok) {
+      console.error(`Failed to fetch price for ${ticker}:`, response.status, data.error);
+      return null;
+    }
+    
+    console.log(`Got price for ${ticker}:`, data.price);
     return data.price || null;
   } catch (error) {
     console.error(`Failed to fetch price for ${ticker}:`, error);
@@ -155,12 +161,16 @@ async function updateHolding(userId, ticker) {
       })
     });
 
+    const responseText = await res.text();
+    console.log('Update response:', res.status, responseText);
+
     if (res.ok) {
       alert('Updated successfully');
     } else {
-      alert('Failed to update');
+      alert(`Failed to update: ${responseText} (${res.status})`);
     }
   } catch (error) {
+    console.error('Update error:', error);
     alert('Error: ' + error.message);
   }
 }
