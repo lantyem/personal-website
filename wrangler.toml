@@ -18,7 +18,7 @@ routes = [
 [[d1_databases]]
 binding = "DB"
 database_name = "personal-website"
-database_id = "your-database-id"
+database_id = "portfolio-db"
 
 # Static assets binding
 [site]
