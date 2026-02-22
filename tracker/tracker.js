@@ -39,7 +39,7 @@ async function getStockPrice(ticker) {
     const data = await response.json();
     
     if (!response.ok) {
-      console.error(`Failed to fetch price for ${ticker}:`, response.status, data.error);
+      console.error(`Failed to fetch price for ${ticker}:`, response.status, response.statusText, data);
       return null;
     }
     
