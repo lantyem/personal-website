@@ -3,6 +3,7 @@
   "include": [
     "/api/login",
     "/api/portfolio",
+    "/api/stock/price",
     "/api/admin/overview",
     "/api/admin/update"
   ],

@@ -35,11 +35,10 @@ async function login() {
 
 async function getStockPrice(ticker) {
   try {
-    // Using Yahoo Finance API via a free endpoint
-    const response = await fetch(`https://query1.finance.yahoo.com/v10/finance/quoteSummary/${ticker}?modules=price`);
+    const response = await fetch(`/api/stock/price?ticker=${ticker}`);
     if (!response.ok) return null;
     const data = await response.json();
-    return data.quoteSummary?.result?.[0]?.price?.regularMarketPrice?.raw || null;
+    return data.price || null;
   } catch (error) {
     console.error(`Failed to fetch price for ${ticker}:`, error);
     return null;
@@ -116,23 +115,28 @@ async function showUserDashboard(portfolioData) {
   totalRow.style.backgroundColor = '#f0f0f0';
 }
 
-function showAdminDashboard(adminData) {
+async function showAdminDashboard(adminData) {
   document.getElementById('login-section').style.display = 'none';
   document.getElementById('dashboard').style.display = 'block';
 
   const table = document.getElementById('portfolio-table');
-  table.innerHTML = '<table><tr><th>User</th><th>Ticker</th><th>Shares</th><th>Action</th></tr>';
+  table.innerHTML = '<table><tr><th>User</th><th>Ticker</th><th>Shares</th><th>Current Price</th><th>Stock Value</th><th>Action</th></tr>';
 
-  adminData.forEach(row => {
+  for (const row of adminData) {
+    const price = await getStockPrice(row.ticker);
+    const stockValue = price ? (price * row.shares).toFixed(2) : 'N/A';
+
     const tableRow = table.querySelector('table').insertRow();
     const inputId = `input-${row.id}-${row.ticker}`;
     tableRow.innerHTML = `
       <td>${row.username}</td>
       <td>${row.ticker}</td>
       <td><input type="number" value="${row.shares}" id="${inputId}"></td>
+      <td>${price ? '$' + price.toFixed(2) : 'N/A'}</td>
+      <td>${stockValue !== 'N/A' ? '$' + stockValue : 'N/A'}</td>
       <td><button onclick="updateHolding(${row.id}, '${row.ticker}')">Save</button></td>
     `;
-  });
+  }
 }
 
 async function updateHolding(userId, ticker) {
