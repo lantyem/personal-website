@@ -1,4 +1,5 @@
 let userRole = null;
+let currentUsername = null;
 
 async function login() {
   const username = document.getElementById('username').value;
@@ -19,6 +20,7 @@ async function login() {
 
     const data = await res.json();
     userRole = data.role;
+    currentUsername = username;
     
     // Fetch appropriate data based on role
     if (userRole === 'admin') {
@@ -31,6 +33,19 @@ async function login() {
   }
 }
 
+async function getStockPrice(ticker) {
+  try {
+    // Using Yahoo Finance API via a free endpoint
+    const response = await fetch(`https://query1.finance.yahoo.com/v10/finance/quoteSummary/${ticker}?modules=price`);
+    if (!response.ok) return null;
+    const data = await response.json();
+    return data.quoteSummary?.result?.[0]?.price?.regularMarketPrice?.raw || null;
+  } catch (error) {
+    console.error(`Failed to fetch price for ${ticker}:`, error);
+    return null;
+  }
+}
+
 async function loadUserDashboard() {
   try {
     const res = await fetch('/api/portfolio');
@@ -40,7 +55,7 @@ async function loadUserDashboard() {
     }
 
     const portfolioData = await res.json();
-    document.getElementById('dashboard-title').textContent = 'Your Portfolio';
+    document.getElementById('dashboard-title').textContent = `${currentUsername}'s Portfolio`;
     showUserDashboard(portfolioData);
   } catch (error) {
     document.getElementById('login-error').textContent = 'Error: ' + error.message;
@@ -63,17 +78,42 @@ async function loadAdminDashboard() {
   }
 }
 
-function showUserDashboard(portfolioData) {
+async function showUserDashboard(portfolioData) {
   document.getElementById('login-section').style.display = 'none';
   document.getElementById('dashboard').style.display = 'block';
 
   const table = document.getElementById('portfolio-table');
-  table.innerHTML = '<table><tr><th>Ticker</th><th>Shares</th></tr>';
+  table.innerHTML = '<table><tr><th>Ticker</th><th>Shares</th><th>Current Price</th><th>Stock Value</th></tr>';
 
-  portfolioData.forEach(item => {
-    const row = table.querySelector('table').insertRow();
-    row.innerHTML = `<td>${item.ticker}</td><td>${item.shares}</td>`;
-  });
+  let portfolioValue = 0;
+
+  for (const item of portfolioData) {
+    const price = await getStockPrice(item.ticker);
+    const stockValue = price ? (price * item.shares).toFixed(2) : 'N/A';
+    
+    if (price) {
+      portfolioValue += parseFloat(stockValue);
+    }
+
+    const tableRow = table.querySelector('table').insertRow();
+    tableRow.innerHTML = `
+      <td>${item.ticker}</td>
+      <td>${item.shares}</td>
+      <td>${price ? '$' + price.toFixed(2) : 'N/A'}</td>
+      <td>${stockValue !== 'N/A' ? '$' + stockValue : 'N/A'}</td>
+    `;
+  }
+
+  // Add portfolio total row
+  const totalRow = table.querySelector('table').insertRow();
+  totalRow.innerHTML = `
+    <td><strong>Total Portfolio Value</strong></td>
+    <td></td>
+    <td></td>
+    <td><strong>$${portfolioValue.toFixed(2)}</strong></td>
+  `;
+  totalRow.style.fontWeight = 'bold';
+  totalRow.style.backgroundColor = '#f0f0f0';
 }
 
 function showAdminDashboard(adminData) {
