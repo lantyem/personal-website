@@ -3,29 +3,9 @@ type = "javascript"
 main = "src/index.js"
 compatibility_date = "2024-01-01"
 
-# Build configuration for static files
-[build]
-command = "npm run build"
-cwd = "./"
-
-# Environment configuration
-[env.production]
-routes = [
-  { pattern = "*.workers.dev", zone_name = "" }
-]
-
 # D1 Database binding
 [[d1_databases]]
 binding = "DB"
 database_name = "personal-website"
 database_id = "8848e765-afe5-407b-85f8-1b09d5c128e0"
-
-# Static assets binding
-[site]
-bucket = "public"
-
-[[rules]]
-type = "CompiledContentType"
-globs = ["**/*.wasm"]
-fallthrough = true
 
