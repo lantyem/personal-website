@@ -9,3 +9,7 @@ binding = "DB"
 database_name = "personal-website"
 database_id = "8848e765-afe5-407b-85f8-1b09d5c128e0"
 
+# Serve static files from root directory
+[site]
+bucket = "."
+

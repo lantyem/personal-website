@@ -234,13 +234,13 @@ export default {
       return handleStockPrice(request, env, url);
     }
 
-    // Serve static files
-    // This requires asset binding in wrangler.toml
-    try {
-      return await env.ASSETS.fetch(request);
-    } catch (error) {
-      return new Response('Not Found', { status: 404 });
+    // Serve static files for everything else
+    if (env.ASSETS) {
+      return env.ASSETS.fetch(request);
     }
+
+    // Fallback: return 404
+    return new Response('Not Found', { status: 404 });
   }
 };
 
