@@ -234,13 +234,61 @@ export default {
       return handleStockPrice(request, env, url);
     }
 
-    // Serve static files for everything else
-    if (env.ASSETS) {
-      return env.ASSETS.fetch(request);
+    // Serve static files
+    // For root path, serve index.html
+    if (url.pathname === '/' || url.pathname === '') {
+      return new Response(await getFile('index.html', env), {
+        headers: { 'Content-Type': 'text/html' }
+      });
     }
 
-    // Fallback: return 404
+    // Try to serve the requested file
+    const filePath = url.pathname.replace(/^\//, '');
+    const content = await getFile(filePath, env);
+    
+    if (content) {
+      const contentType = getContentType(filePath);
+      return new Response(content, {
+        headers: { 'Content-Type': contentType }
+      });
+    }
+
     return new Response('Not Found', { status: 404 });
   }
 };
+
+// Helper to get file content
+async function getFile(path, env) {
+  try {
+    // Try __STATIC_CONTENT binding (standard Wrangler [site] binding name)
+    if (env.__STATIC_CONTENT) {
+      return await env.__STATIC_CONTENT.get(path);
+    }
+    // Fallback to ASSETS if it exists
+    if (env.ASSETS) {
+      const assetRequest = new Request(new URL(path, 'http://assets'), {
+        method: 'GET'
+      });
+      const response = await env.ASSETS.fetch(assetRequest);
+      if (response.ok) {
+        return await response.text();
+      }
+    }
+  } catch (e) {
+    console.log('File fetch error for', path, ':', e);
+  }
+  return null;
+}
+
+// Helper to determine content type
+function getContentType(filePath) {
+  if (filePath.endsWith('.html')) return 'text/html;charset=utf-8';
+  if (filePath.endsWith('.js')) return 'application/javascript';
+  if (filePath.endsWith('.css')) return 'text/css';
+  if (filePath.endsWith('.json')) return 'application/json';
+  if (filePath.endsWith('.png')) return 'image/png';
+  if (filePath.endsWith('.jpg') || filePath.endsWith('.jpeg')) return 'image/jpeg';
+  if (filePath.endsWith('.pdf')) return 'application/pdf';
+  return 'text/plain';
+}
 
