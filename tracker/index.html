@@ -15,29 +15,62 @@
         <a href="/papers.html">Papers</a>
         <a href="/presentations.html">Presentations</a>
         <a href="/apps/">Apps</a>
-        <a href="/portfolio-tracker/">Portfolio Tracker</a>
+        <a href="/tracker/index.html">Portfolio Tracker</a>
         <a href="/assets/CV.pdf" target="_blank">CV</a>
     </nav>
 </header>
 
 <main class="container">
 
-    <section id="login-section">
-        <h1>Login</h1>
-        <input id="username" placeholder="Username">
-        <input id="password" type="password" placeholder="Password">
-        <button onclick="login()">Login</button>
-        <p id="login-error"></p>
+    <section class="intro">
+        <h1>Portfolio Tracker</h1>
+        <p>This tracker page is available without a login. It displays your portfolio overview and links to the relevant holdings.</p>
     </section>
 
-    <section id="dashboard" style="display:none;">
-        <h1 id="dashboard-title">Portfolio</h1>
-        <div id="portfolio-table"></div>
+    <section class="links">
+        <div class="link-card">
+            <h2>Current Portfolio</h2>
+            <p>Below is an example portfolio overview. This page currently contains static data instead of a login flow.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ticker</th>
+                        <th>Shares</th>
+                        <th>Current Price</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>VT</td>
+                        <td>10</td>
+                        <td>$110.00</td>
+                        <td>$1,100.00</td>
+                    </tr>
+                    <tr>
+                        <td>VMFXX</td>
+                        <td>25</td>
+                        <td>$1.00</td>
+                        <td>$25.00</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td><strong>Total</strong></td>
+                        <td></td>
+                        <td></td>
+                        <td><strong>$1,125.00</strong></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
     </section>
 
 </main>
 
-<script src="tracker.js"></script>
+<footer>
+    © 2026 LFOR
+</footer>
 
 <footer>
     © 2026 LFOR
