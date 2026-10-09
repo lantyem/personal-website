@@ -9,7 +9,7 @@
 <body>
 
 <header class="navbar">
-    <div class="logo"><img src="/assets/finlogo.png" alt="Return the slab"></div>
+    <div class="logo"><img src="/assets/finlogo.png" alt="LFOR logo"></div>
     <nav>
         <a href="/">Home</a>
         <a href="/papers.html">Papers</a>
@@ -22,48 +22,48 @@
 
 <main class="container">
 
-    <section class="intro">
-        <h1>Portfolio Tracker</h1>
-        <p>This tracker page is available without a login. It displays your portfolio overview and links to the relevant holdings.</p>
+    <section id="login-section">
+        <div class="intro">
+            <h1>Portfolio Tracker</h1>
+            <p>Sign in to view your holdings.</p>
+        </div>
+
+        <form id="login-form" class="auth-form">
+            <label for="login-email">Email</label>
+            <input id="login-email" type="email" autocomplete="email" required>
+
+            <label for="login-password">Password</label>
+            <input id="login-password" type="password" autocomplete="current-password" required>
+
+            <button type="submit">Sign in</button>
+        </form>
+
+        <details class="auth-form">
+            <summary>Create an account</summary>
+            <form id="signup-form">
+                <label for="signup-username">Username</label>
+                <input id="signup-username" type="text" autocomplete="username" required>
+
+                <label for="signup-email">Email</label>
+                <input id="signup-email" type="email" autocomplete="email" required>
+
+                <label for="signup-password">Password</label>
+                <input id="signup-password" type="password" autocomplete="new-password" required>
+
+                <button type="submit">Sign up</button>
+            </form>
+        </details>
+
+        <p id="status" class="status" role="status"></p>
     </section>
 
-    <section class="links">
-        <div class="link-card">
-            <h2>Current Portfolio</h2>
-            <p>Below is an example portfolio overview. This page currently contains static data instead of a login flow.</p>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Ticker</th>
-                        <th>Shares</th>
-                        <th>Current Price</th>
-                        <th>Value</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>VT</td>
-                        <td>10</td>
-                        <td>$110.00</td>
-                        <td>$1,100.00</td>
-                    </tr>
-                    <tr>
-                        <td>VMFXX</td>
-                        <td>25</td>
-                        <td>$1.00</td>
-                        <td>$25.00</td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td><strong>Total</strong></td>
-                        <td></td>
-                        <td></td>
-                        <td><strong>$1,125.00</strong></td>
-                    </tr>
-                </tfoot>
-            </table>
+    <section id="dashboard" hidden>
+        <div class="intro">
+            <h1 id="dashboard-title">Portfolio</h1>
+            <p>Signed in as <span id="who"></span>. <button id="logout" type="button">Sign out</button></p>
         </div>
+        <div id="portfolio-table"></div>
+        <p id="dashboard-status" class="status" role="status"></p>
     </section>
 
 </main>
@@ -72,9 +72,8 @@
     © 2026 LFOR
 </footer>
 
-<footer>
-    © 2026 LFOR
-</footer>
+<script src="/assets/config.js"></script>
+<script type="module" src="tracker.js"></script>
 
 </body>
 </html>
