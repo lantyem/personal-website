@@ -230,13 +230,21 @@ async function onLogin(event) {
   event.preventDefault();
   setStatus("Signing in…");
 
-  const { error } = await supabase.auth.signInWithPassword({
-    email: emailFor($("login-username").value),
-    password: $("login-password").value,
-  });
+  try {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: emailFor($("login-username").value),
+      password: $("login-password").value,
+    });
 
-  if (error) setStatus("Invalid username or password.", true);
-  else setStatus("");
+    if (error) {
+      setStatus("Invalid username or password.", true);
+      return;
+    }
+
+    if (data.session) await enterApp(data.session.user);
+  } catch (err) {
+    setStatus(`Sign in failed: ${err.message ?? err}`, true);
+  }
 }
 
 async function onSignup(event) {
@@ -246,33 +254,41 @@ async function onSignup(event) {
   const username = normalizeUsername($("signup-username").value);
 
   if (!/^[a-z0-9._-]+$/.test(username)) {
-    setStatus("Username may only use letters, numbers, dot, dash, underscore.", true);
-    return;
-  }
-
-  const { data, error } = await supabase.auth.signUp({
-    email: emailFor(username),
-    password: $("signup-password").value,
-    options: {
-      data: { username },
-    },
-  });
-
-  if (error) {
     setStatus(
-      error.message.toLowerCase().includes("registered")
-        ? "That username is taken."
-        : error.message,
+      "Username may only use letters, numbers, dot, dash, underscore.",
       true,
     );
     return;
   }
 
-  setStatus(
-    data.session
-      ? "Account created. You are signed in."
-      : "Account created. You can sign in now.",
-  );
+  try {
+    const { data, error } = await supabase.auth.signUp({
+      email: emailFor(username),
+      password: $("signup-password").value,
+      options: {
+        data: { username },
+      },
+    });
+
+    if (error) {
+      setStatus(
+        error.message.toLowerCase().includes("registered")
+          ? "That username is taken."
+          : error.message,
+        true,
+      );
+      return;
+    }
+
+    if (data.session) {
+      setStatus("Account created. You are signed in.");
+      await enterApp(data.session.user);
+    } else {
+      setStatus("Account created. You can sign in now.");
+    }
+  } catch (err) {
+    setStatus(`Sign up failed: ${err.message ?? err}`, true);
+  }
 }
 
 async function init() {
