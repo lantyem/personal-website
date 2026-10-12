@@ -41,15 +41,24 @@ The `anon` key is safe to commit — RLS enforces access. Never put the
 
 ### 3. Create your account and make it admin
 
-1. Visit `/tracker/`, use **Create an account** to sign up (email + password).
-2. In Supabase **SQL Editor**, promote yourself:
+Accounts are **username-only**. The tracker maps each username to a synthetic
+email (`<username>@tracker.local`) internally, so no real inbox is needed.
+
+1. In Supabase **Authentication → Sign In / Providers → Email**, turn
+   **Confirm email** off (otherwise sign-ups wait on a confirmation email that
+   will never arrive).
+2. Visit `/tracker/`, use **Create an account** to sign up with a username +
+   password.
+3. In Supabase **SQL Editor**, promote yourself:
 
    ```sql
    update public.profiles set role = 'admin' where username = 'YOUR_USERNAME';
    ```
 
-3. Sign out and back in. The tracker now shows every user's holdings with
+4. Sign out and back in. The tracker now shows every user's holdings with
    editable share counts.
+
+Note: with no real email there is **no password reset** — keep passwords safe.
 
 Public signups are open by default. To make it invite-only, turn off
 **Authentication → Providers → Email → Enable signups** in Supabase.

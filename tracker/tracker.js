@@ -8,6 +8,16 @@ const state = {
 const $ = (id) => document.getElementById(id);
 const priceCache = new Map();
 
+const EMAIL_DOMAIN = "tracker.local";
+
+function normalizeUsername(value) {
+  return value.trim().toLowerCase();
+}
+
+function emailFor(username) {
+  return `${normalizeUsername(username)}@${EMAIL_DOMAIN}`;
+}
+
 function setStatus(message, isError = false) {
   const el = $("status");
   el.textContent = message;
@@ -49,7 +59,8 @@ async function enterApp(user) {
     .maybeSingle();
 
   state.role = profile?.role ?? "user";
-  $("who").textContent = profile?.username || user.email;
+  const fallbackUsername = user.email?.split("@")[0] ?? "user";
+  $("who").textContent = profile?.username || fallbackUsername;
   $("dashboard-title").textContent =
     state.role === "admin" ? "All Portfolios (admin)" : "Your Portfolio";
 
@@ -220,11 +231,11 @@ async function onLogin(event) {
   setStatus("Signing in…");
 
   const { error } = await supabase.auth.signInWithPassword({
-    email: $("login-email").value.trim(),
+    email: emailFor($("login-username").value),
     password: $("login-password").value,
   });
 
-  if (error) setStatus(error.message, true);
+  if (error) setStatus("Invalid username or password.", true);
   else setStatus("");
 }
 
@@ -232,23 +243,35 @@ async function onSignup(event) {
   event.preventDefault();
   setStatus("Creating account…");
 
+  const username = normalizeUsername($("signup-username").value);
+
+  if (!/^[a-z0-9._-]+$/.test(username)) {
+    setStatus("Username may only use letters, numbers, dot, dash, underscore.", true);
+    return;
+  }
+
   const { data, error } = await supabase.auth.signUp({
-    email: $("signup-email").value.trim(),
+    email: emailFor(username),
     password: $("signup-password").value,
     options: {
-      data: { username: $("signup-username").value.trim() },
+      data: { username },
     },
   });
 
   if (error) {
-    setStatus(error.message, true);
+    setStatus(
+      error.message.toLowerCase().includes("registered")
+        ? "That username is taken."
+        : error.message,
+      true,
+    );
     return;
   }
 
   setStatus(
     data.session
       ? "Account created. You are signed in."
-      : "Check your email to confirm your account.",
+      : "Account created. You can sign in now.",
   );
 }
 
